@@ -1,0 +1,282 @@
+/**
+ * Comet Mosaico - Responsive Mosaic Layout Styles
+ * 
+ * This stylesheet provides a fully responsive mosaic grid layout with support
+ * for different tile sizes and device breakpoints.
+ * 
+ * CSS Classes Documentation:
+ * 
+ * Layout Containers:
+ * - .container: Main content wrapper with max-width constraint
+ * - .mosaic-grid: Grid container for mosaic tiles
+ * 
+ * Tile Components:
+ * - .mosaic-tile: Base tile component with standard styling
+ * - .mosaic-tile--small: Compact tile (1x1 grid cell)
+ * - .mosaic-tile--large: Large tile (2x2 grid cells)
+ * - .mosaic-tile--wide: Wide tile (2x1 grid cells)
+ * - .mosaic-tile--tall: Tall tile (1x2 grid cells)
+ * 
+ * Tile Elements:
+ * - .mosaic-tile__icon: Icon container within tile
+ * - .mosaic-tile__title: Title/heading within tile
+ * - .mosaic-tile__description: Description text within tile
+ * 
+ * Responsive Breakpoints:
+ * - Mobile: < 576px (1 column)
+ * - Tablet: 576px - 768px (2 columns)
+ * - Desktop: 768px - 1024px (3 columns)
+ * - Large Desktop: > 1024px (4 columns)
+ */
+
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Container */
+.container {
+    max-width: 1200px;
+    width: 100%;
+}
+
+/* Header */
+.page-header {
+    text-align: center;
+    color: white;
+    font-size: 3rem;
+    margin-bottom: 2rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+/* Mosaic Grid Layout */
+.mosaic-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    grid-auto-rows: minmax(200px, auto);
+}
+
+/* Base Tile Styles */
+.mosaic-tile {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.mosaic-tile:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.3);
+}
+
+.mosaic-tile:focus {
+    outline: 3px solid #667eea;
+    outline-offset: 2px;
+}
+
+/* Tile Elements */
+.mosaic-tile__icon {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+}
+
+.mosaic-tile__title {
+    color: #667eea;
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+}
+
+.mosaic-tile__description {
+    color: #666;
+    line-height: 1.6;
+}
+
+/* Tile Size Variants */
+.mosaic-tile--large {
+    grid-column: span 2;
+    grid-row: span 2;
+}
+
+.mosaic-tile--wide {
+    grid-column: span 2;
+}
+
+.mosaic-tile--tall {
+    grid-row: span 2;
+}
+
+/* Mobile First - Extra Small Devices (< 576px) */
+@media (max-width: 575.98px) {
+    body {
+        padding: 10px;
+    }
+
+    .page-header {
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .mosaic-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        padding: 10px;
+        grid-auto-rows: auto;
+    }
+
+    .mosaic-tile {
+        padding: 20px;
+    }
+
+    .mosaic-tile__icon {
+        font-size: 2rem;
+    }
+
+    .mosaic-tile__title {
+        font-size: 1.25rem;
+    }
+
+    /* Disable large tile variants on mobile */
+    .mosaic-tile--large,
+    .mosaic-tile--wide,
+    .mosaic-tile--tall {
+        grid-column: span 1;
+        grid-row: span 1;
+    }
+}
+
+/* Small Devices - Tablets (576px - 767.98px) */
+@media (min-width: 576px) and (max-width: 767.98px) {
+    .page-header {
+        font-size: 2.5rem;
+    }
+
+    .mosaic-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 18px;
+        padding: 15px;
+    }
+
+    .mosaic-tile {
+        padding: 25px;
+    }
+
+    /* Adjust large variants for tablets */
+    .mosaic-tile--large {
+        grid-column: span 2;
+        grid-row: span 1;
+    }
+
+    .mosaic-tile--tall {
+        grid-row: span 1;
+    }
+}
+
+/* Medium Devices - Small Laptops (768px - 1023.98px) */
+@media (min-width: 768px) and (max-width: 1023.98px) {
+    .mosaic-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    }
+
+    /* Adjust wide tiles for medium screens */
+    .mosaic-tile--large {
+        grid-column: span 2;
+        grid-row: span 2;
+    }
+}
+
+/* Large Devices - Desktops (>= 1024px) */
+@media (min-width: 1024px) {
+    .mosaic-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+    }
+
+    .page-header {
+        font-size: 3.5rem;
+    }
+
+    /* Full support for all tile variants on large screens */
+    .mosaic-tile--large {
+        grid-column: span 2;
+        grid-row: span 2;
+    }
+}
+
+/* Extra Large Devices - Large Desktops (>= 1440px) */
+@media (min-width: 1440px) {
+    .container {
+        max-width: 1400px;
+    }
+
+    .mosaic-grid {
+        grid-template-columns: repeat(5, 1fr);
+    }
+}
+
+/* Accessibility Enhancements */
+@media (prefers-reduced-motion: reduce) {
+    .mosaic-tile {
+        transition: none;
+    }
+
+    .mosaic-tile:hover {
+        transform: none;
+    }
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+    .mosaic-tile {
+        border: 2px solid #000;
+    }
+
+    .mosaic-tile:focus {
+        outline-width: 4px;
+    }
+}
+
+/* Print Styles */
+@media print {
+    body {
+        background: white;
+        padding: 0;
+    }
+
+    .mosaic-grid {
+        display: block;
+    }
+
+    .mosaic-tile {
+        page-break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid #ccc;
+        margin-bottom: 20px;
+    }
+
+    .mosaic-tile:hover {
+        transform: none;
+        box-shadow: none;
+    }
+}
