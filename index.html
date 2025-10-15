@@ -10,22 +10,16 @@
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             padding: 20px;
         }
-
         .container {
             max-width: 1200px;
-            width: 100%;
+            margin: 0 auto;
         }
-
         h1 {
             text-align: center;
             color: white;
@@ -33,14 +27,12 @@
             margin-bottom: 2rem;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
-
         .mosaic-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
             padding: 20px;
         }
-
         .mosaic-tile {
             background: white;
             border-radius: 15px;
@@ -49,26 +41,107 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             cursor: pointer;
         }
-
         .mosaic-tile:hover {
             transform: translateY(-5px);
             box-shadow: 0 12px 24px rgba(0,0,0,0.3);
         }
-
         .mosaic-tile h2 {
             color: #667eea;
             margin-bottom: 15px;
             font-size: 1.5rem;
         }
-
         .mosaic-tile p {
             color: #666;
             line-height: 1.6;
         }
-
         .icon {
             font-size: 2.5rem;
             margin-bottom: 15px;
+        }
+        
+        /* Estilos para blocos dinâmicos */
+        #dynamic-mosaic {
+            margin-top: 40px;
+        }
+        .controls {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .controls button {
+            background: white;
+            color: #667eea;
+            border: none;
+            padding: 12px 24px;
+            margin: 0 10px;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+        .controls button:hover {
+            background: #667eea;
+            color: white;
+            transform: scale(1.05);
+        }
+        .mosaic-block {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.3s ease;
+        }
+        .mosaic-block.block-enter {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .mosaic-block.removing {
+            opacity: 0;
+            transform: scale(0.8) rotate(5deg);
+        }
+        .block-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .block-header h3 {
+            color: #667eea;
+            font-size: 1.2rem;
+        }
+        .remove-block-btn {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .remove-block-btn:hover {
+            background: #ff5252;
+            transform: rotate(90deg);
+        }
+        .block-content {
+            margin-bottom: 10px;
+        }
+        .block-footer {
+            color: #999;
+            font-size: 0.85rem;
+        }
+        .section-title {
+            color: white;
+            text-align: center;
+            font-size: 2rem;
+            margin-top: 40px;
+            margin-bottom: 20px;
         }
     </style>
 </head>
@@ -101,6 +174,73 @@
                 <p>Customize sua experiência de navegação</p>
             </div>
         </div>
+
+        <!-- Seção Dinâmica -->
+        <h2 class="section-title">✨ Mosaico Dinâmico - MVP</h2>
+        <div id="dynamic-mosaic">
+            <div class="controls">
+                <button onclick="addNewBlock()">➕ Adicionar Bloco</button>
+                <button onclick="clearAllBlocks()">🗑️ Limpar Tudo</button>
+                <button onclick="showState()">📊 Ver Estado</button>
+            </div>
+            <div id="mosaic-container" class="mosaic-grid"></div>
+        </div>
     </div>
+
+    <!-- Integração do mosaic.js -->
+    <script src="mosaic.js"></script>
+    <script>
+        // Inicializa o gerenciador de mosaico
+        let mosaico;
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            mosaico = new MosaicoManager('mosaic-container');
+            console.log('Mosaico inicializado com sucesso!');
+            
+            // Adiciona alguns blocos de exemplo
+            mosaico.addBlock({
+                title: 'Bem-vindo!',
+                content: 'Este é o MVP do componente de mosaico dinâmico',
+                color: '#E3F2FD'
+            });
+        });
+        
+        function addNewBlock() {
+            const titles = [
+                'Novo Bloco',
+                'Tarefa',
+                'Nota Rápida',
+                'Lembrete',
+                'Ideia'
+            ];
+            const contents = [
+                'Este é um bloco criado dinamicamente!',
+                'Clique no X para remover',
+                'Você pode adicionar quantos blocos quiser',
+                'Experimente as funcionalidades do MVP',
+                'Arrastar e soltar em breve!'
+            ];
+            
+            const randomTitle = titles[Math.floor(Math.random() * titles.length)];
+            const randomContent = contents[Math.floor(Math.random() * contents.length)];
+            
+            mosaico.addBlock({
+                title: randomTitle,
+                content: randomContent
+            });
+        }
+        
+        function clearAllBlocks() {
+            if (confirm('Deseja realmente remover todos os blocos?')) {
+                mosaico.clearAll();
+            }
+        }
+        
+        function showState() {
+            const state = mosaico.getState();
+            alert(`Estado do Mosaico:\n\nTotal de blocos: ${state.totalBlocks}\nÚltima atualização: ${new Date(state.lastUpdate).toLocaleString('pt-BR')}`);
+            console.log('Estado completo:', state);
+        }
+    </script>
 </body>
 </html>
